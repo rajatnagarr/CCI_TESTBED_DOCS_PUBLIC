@@ -25,12 +25,6 @@ Welcome to CCI's xG Testbed documentation!
 
 .. toctree::
    :maxdepth: 9
-   :caption: Network Architecture
-
-   Infrastructure
-
-.. toctree::
-   :maxdepth: 9
    :caption: OpenSAS Architecture
 
    Opensas
@@ -40,12 +34,6 @@ Welcome to CCI's xG Testbed documentation!
    :caption: Opensack Dashboard
 
    openstack
-
-.. toctree::
-   :maxdepth: 9
-   :caption: openstack-kolla-ansible
-
-   openstack-kolla-ansible
 
 .. toctree::
    :maxdepth: 9
