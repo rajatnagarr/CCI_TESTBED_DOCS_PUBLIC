@@ -1,13 +1,9 @@
-
-
 Welcome to CCI's xG Testbed documentation!
 ============================================
 
-
-
 .. toctree::
    :maxdepth: 9
-   :caption: What is CCI xG Testbed
+   :caption: Overview
 
    ccixg
 
@@ -19,25 +15,25 @@ Welcome to CCI's xG Testbed documentation!
 
 .. toctree::
    :maxdepth: 9
-   :caption: About CCI xG Testbed
+   :caption: Introduction
 
    introduction
 
 .. toctree::
    :maxdepth: 9
-   :caption: OpenSAS Architecture
+   :caption: OpenSAS
 
    Opensas
 
 .. toctree::
    :maxdepth: 9
-   :caption: Opensack Dashboard
+   :caption: OpenStack
 
    openstack
 
 .. toctree::
    :maxdepth: 9
-   :caption: Network Plan Configuration
+   :caption: Network Plan
 
    net_plan_config
 
@@ -49,13 +45,13 @@ Welcome to CCI's xG Testbed documentation!
 
 .. toctree::
    :maxdepth: 9
-   :caption: UHD Configuration
+   :caption: UHD Config
 
    uhd
 
 .. toctree::
    :maxdepth: 9
-   :caption: 4G Prerequisite
+   :caption: 4G Setup
 
    4g_prerequisite
 
@@ -64,7 +60,6 @@ Welcome to CCI's xG Testbed documentation!
    :caption: 4G Deployment
 
    4g-deployment
-
 
 .. toctree::
    :maxdepth: 9
@@ -86,26 +81,18 @@ Welcome to CCI's xG Testbed documentation!
 
 .. toctree::
    :maxdepth: 9
-   :caption: Team Info
+   :caption: Team
 
    team_info
 
 .. toctree::
    :maxdepth: 9
-   :caption: Research Area
+   :caption: Research
 
    research_area
 
 .. toctree::
    :maxdepth: 9
-   :caption: Contact Us
+   :caption: Contact
 
    contact_us
-
-
-
-
-
-
-
-
