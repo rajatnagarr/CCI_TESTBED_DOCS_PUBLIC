@@ -87,7 +87,7 @@ To create an OpenStack instance with **USRP access** using the Command-Line Inte
 
    .. code-block:: bash
 
-       openstack server create --flavor <flavor_name> --image <image_name> --nic port-id=$(openstack port list | grep <usrp_number> | awk '{print $2}') --nic net-id=<internal_network_id> --availability-zone radio <instance_name>
+       openstack --insecure server create --flavor <flavor_name> --image <image_name> --nic port-id=$(openstack --insecure port list | grep <usrp_number> | awk '{print $2}') --nic net-id=<internal_network_id> --availability-zone radio <instance_name>
 
    **Note**: Replace ``<flavor_name>``, ``<image_name>``, ``<usrp_number>``, ``<internal_network_id>``, and ``<instance_name>`` with the appropriate values.
 
