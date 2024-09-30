@@ -1,23 +1,23 @@
 Launching OpenStack Instances
-=============================================================
+=============================
 
 This documentation provides steps to create and launch OpenStack instances with USRP (Universal Software Radio Peripheral) access using the Command-Line Interface (CLI) and generic compute VMs through the OpenStack dashboard.
 
 Keywords: USRP, Instance, OpenStack, CLI, Dashboard, Compute VM, Cloud Computing
 
 .. note::
-    - Each USRP can only be connected to one instance at a time.
-    - Users cannot create an instance with a USRP network unless granted access by an OpenStack admin.
-    - This guide is intended for users on Linux, macOS, and Windows devices.
+   - Each USRP can only be connected to one instance at a time.
+   - Users cannot create an instance with a USRP network unless granted access by an OpenStack admin.
+   - This guide is intended for users on Linux, macOS, and Windows devices.
 
-CLI Instructions for USRP Access
---------------------------------
+Creating an OpenStack Instance with USRP Access Using the Command-Line Interface (CLI)
+--------------------------------------------------------------------------------------
 
 To create an OpenStack instance with **USRP access** using the Command-Line Interface (CLI), follow the steps below:
 
 1. **Download Your OpenStack RC File**
 
-   - Log in to the OpenStack portal: `Link <https://portal.ccixgtestbed.org/auth/login>`_.
+   - Log in to the OpenStack portal: `https://portal.ccixgtestbed.org/auth/login`_.
    - Download your profile's RC file from the drop-down in the top-right corner.
 
    .. image:: _static/rc_file.gif
@@ -77,21 +77,126 @@ To create an OpenStack instance with **USRP access** using the Command-Line Inte
 
    This command will prompt you to enter your OpenStack password.
 
-    .. image:: _static/rc_file_command_2.png
-        :align: center
-        :width: 550px
+   .. image:: _static/rc_file_command_2.png
+       :align: center
+       :width: 550px
 
 4. **Create an Instance with USRP Access**
+
+   **CLI Instructions for Compute**
+
+   Use the following command to create an instance with compute access:
+
+   .. code-block:: bash
+
+       openstack --insecure server create --flavor <flavor_name> --image <image_name> --nic net-id=<internal_network_id> --availability-zone compute <instance_name>
+
+   **CLI Instructions for Radio**
 
    Use the following command to create an instance with USRP access:
 
    .. code-block:: bash
 
-       openstack --insecure server create --flavor <flavor_name> --image <image_name> --nic port-id=$(openstack --insecure port list | grep <usrp_number> | awk '{print $2}') --nic net-id=<internal_network_id> --availability-zone radio <instance_name>
+       openstack --insecure server create --flavor <flavor_name> --image <image_name> --nic port-id=$(openstack --insecure port list | grep USRP-<usrp_number> | awk '{print $2}') --nic net-id=<internal_network_id> --availability-zone radio <instance_name>
+
+   **CLI Instructions for GPU**
+
+   Use the following command to create an instance with GPU access:
+
+   .. code-block:: bash
+
+       openstack --insecure server create --flavor <flavor_name> --image <image_name> --nic net-id=<internal_network_id> --availability-zone gpu <instance_name>
 
    **Note**: Replace ``<flavor_name>``, ``<image_name>``, ``<usrp_number>``, ``<internal_network_id>``, and ``<instance_name>`` with the appropriate values.
 
-   For further details, watch the tutorial video: https://youtu.be/NtC79iuUNNI
+   For further details, watch the tutorial video: `https://youtu.be/NtC79iuUNNI`_
+
+5. **Configure the USRP Network Interface Inside the Instance**
+
+   After successfully creating your instance with USRP access, you need to configure the network interface inside the instance to communicate with the USRP device. Follow these steps:
+
+   a. **Check Network Interfaces**
+
+      Open a terminal in your instance and run:
+
+      .. code-block:: bash
+
+          ip a
+
+      This command lists all network interfaces and their configurations.
+
+      - **ens3**: This interface is always present and connected to the internal network (IP range ``10.0.0.0/24``).
+      - **USRP Interface**: There should be an additional interface (e.g., **ens5**, **ens7**, or another name), which is connected to the USRP device.
+
+   b. **Configure the USRP Network Interface**
+
+      You need to configure the USRP network interface with a static IP address to communicate with the USRP device.
+
+      - Open the netplan configuration file:
+
+        .. code-block:: bash
+
+            sudo nano /etc/netplan/<press Tab to autocomplete the filename>
+
+        You may be prompted for your password.
+
+      - In the netplan configuration file, locate the section for the USRP interface (e.g., **ens5** or **ens7**).
+
+      - Set **DHCP** to **false** for the USRP interface.
+
+      - Configure the static IP address for the USRP interface. The IP address should match the IP range assigned to your USRP device.
+
+        For example:
+
+        .. code-block:: yaml
+
+            network:
+              version: 2
+              renderer: networkd
+              ethernets:
+                ens5:
+                  dhcp4: false
+                  addresses:
+                    - 192.168.<USRP_SUBNET>.1/24
+                  mtu: 9000
+
+        Replace ``<USRP_SUBNET>`` with the specific subnet number assigned to your USRP device (between 101 and 172).
+
+        **Note**: The USRP device's IP address always ends with **.2** (e.g., ``192.168.101.2``).
+
+      - Save the file and exit the editor (Ctrl+O to save, Ctrl+X to exit in nano).
+
+   c. **Apply the Network Configuration**
+
+      Apply the changes by running:
+
+      .. code-block:: bash
+
+          sudo netplan apply
+
+   d. **Verify Connectivity to the USRP Device**
+
+      - Ping the USRP device to ensure connectivity:
+
+        .. code-block:: bash
+
+            ping 192.168.<USRP_SUBNET>.2
+
+        Replace ``<USRP_SUBNET>`` with the appropriate subnet number.
+
+      - You should receive replies from the USRP device.
+
+   e. **Discover the USRP Device**
+
+      Use the UHD (USRP Hardware Driver) utility to find the USRP device:
+
+      .. code-block:: bash
+
+          uhd_find_devices --args="addr=192.168.<USRP_SUBNET>.2"
+
+      Verify that the output displays information about the connected USRP device.
+
+   **Note**: If you encounter any issues during these steps, ensure that your USRP device is properly connected and that the IP addresses are correctly configured. You can add additional configurations or troubleshooting steps as needed.
 
 Dashboard Instructions for Compute VM Access
 --------------------------------------------
@@ -100,7 +205,7 @@ To create a **compute VM** using the **OpenStack dashboard**, follow these steps
 
 1. **Log in to the OpenStack Dashboard**
 
-   - Access the OpenStack portal: `Link <https://portal.ccixgtestbed.org/auth/login>`_.
+   - Access the OpenStack portal: `https://portal.ccixgtestbed.org/auth/login`_.
 
    .. image:: _static/instance-1.png
         :align: center
@@ -112,7 +217,7 @@ To create a **compute VM** using the **OpenStack dashboard**, follow these steps
 
    - Provide a name for the instance.
    - Select ``compute`` as the availability zone (for generic VMs, not ``radio``).
-   
+
    .. image:: _static/instance-2.png
         :align: center
         :width: 650px
@@ -160,4 +265,6 @@ To create a **compute VM** using the **OpenStack dashboard**, follow these steps
         :width: 650px
 
 .. note::
-    If you encounter any issues with the OpenStack dashboard, login credentials, or network access, raise a ticket in Redmine or contact the administrator at `cci.xg.testbed.admin@cyberinitiative.org`.
+   If you encounter any issues with the OpenStack dashboard, login credentials, or network access, raise a ticket in Redmine or contact the administrator at `cci.xg.testbed.admin@cyberinitiative.org`_.
+
+By following these steps, you should be able to successfully launch and configure an OpenStack instance with USRP access. Remember to verify each configuration step to ensure connectivity with the USRP device.
