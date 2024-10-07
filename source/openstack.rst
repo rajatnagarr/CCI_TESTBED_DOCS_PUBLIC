@@ -99,7 +99,7 @@ CLI Instructions for Radio
 
    .. code-block:: bash
 
-       openstack --insecure server create --flavor <flavor_name> --image <image_name> --nic port-id=$(openstack --insecure port list | grep USRP-<usrp_number> | awk '{print $2}') --nic net-id=<internal_network_id> --availability-zone radio <instance_name>
+       openstack --insecure server create --flavor <flavor_name> --image <image_name> --nic port-id=$(openstack --insecure port list | grep USRP-<usrp_number> | awk '{print $2}') --nic net-id=<internal_network_id> --availability-zone radio --user-data <file_name> <instance_name>
     
 CLI Instructions for GPU
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
