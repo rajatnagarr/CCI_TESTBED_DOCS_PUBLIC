@@ -15,7 +15,7 @@ To create an OpenStack instance with **USRP access** using the Command-Line Inte
 
 1. **Download Your OpenStack RC File**
 
-   - Log in to the OpenStack portal: Link <https://portal.ccixgtestbed.org/auth/login>_.
+   - Log in to the OpenStack portal: `Link <https://portal.ccixgtestbed.org/auth/login>`_.
    - Download your profile's RC file from the drop-down in the top-right corner.
 
    .. image:: _static/rc_file.gif
@@ -115,7 +115,7 @@ CLI Instructions for GPU
 
 .. 5. **Configure the USRP Network Interface Inside the Instance**
 Configure the USRP Network Interface Inside the Instance
-=============================================================
+========================================================
 
 
    After creating the instance, follow these steps to configure the USRP network interface:
@@ -199,6 +199,188 @@ Configure the USRP Network Interface Inside the Instance
 
    **Note**: If you encounter any issues, ensure that your USRP device is properly connected and that the IP addresses are correctly configured.
 
+Create OpenStack Network
+========================
+
+To create a network in OpenStack, follow these steps:
+
+1. **Log in to the OpenStack Dashboard**
+
+   1. Open a web browser and navigate to the OpenStack dashboard URL.
+   2. Enter your **Username**, **Password**, and **Domain Name**.
+   3. Click **Sign In**.
+
+2. **Navigate to the Network Section**
+
+   1. In the left-hand menu, under the **Project** section, click on the **Network** tab.
+   2. From the drop-down menu, select **Networks**.
+
+3. **Create a New Network**
+
+   1. Click the **Create Network** button.
+   2. In the **Create Network** dialog, provide the following details:
+      - **Name**: Enter a name for the network (e.g., `Internal/External-Network-Username`).
+      - **Description**: *(Optional)* Provide a brief description of the network.
+      - **Provider Network**: Leave as default for a regular tenant network.
+      - **Admin State**: Ensure the admin state is set to **Up**.
+   3. Click **Create** to create the network.
+
+4. **Create a Subnet for the Network**
+
+   1. After creating the network, navigate to the **Subnets** tab under the **Network** section.
+   2. Click the **Create Subnet** button.
+   3. In the **Create Subnet** dialog, provide the following details:
+      - **Name**: Enter a name for the subnet (e.g., `Internal/External-Subnet-Username`).
+      - **IP Version**: Choose **IPv4**.
+      - **CIDR**: Enter the IP address range in CIDR notation (e.g., `10.0.0.0/24`).
+      - **Gateway IP**: *(Optional)* Enter the gateway IP address for the subnet.
+      - **Allocation Pools**: *(Optional)* Define a range of IP addresses to allocate from.
+      - **DNS Name Servers**: *(Optional)* Enter DNS nameservers if required.
+      - **Host Routes**: *(Optional)* Define any host routes for the subnet.
+   4. Click **Create** to create the subnet.
+
+5. **Create a Router (Optional)**
+
+   If you need to connect your network to an external network or provide internet access, you may need to create a router:
+
+   1. Navigate to the **Routers** tab under the **Network** section.
+   2. Click the **Create Router** button.
+   3. In the **Create Router** dialog, provide the following details:
+      - **Name**: Enter a name for the router (e.g., `Internal/External-Router-Username`).
+      - **Description**: *(Optional)* Provide a brief description of the router.
+      - **Admin State**: Ensure the admin state is set to **Up**.
+   4. Click **Create** to create the router.
+   5. **Attach the Router to the Network**:
+      - Select the router from the list and click on it to open the details page.
+      - Navigate to the **Interfaces** tab and click **Add Interface**.
+      - Select the subnet you created and click **Add Interface**.
+
+6. **Verify Network Configuration**
+
+   1. Return to the **Networks** tab and ensure your new network appears in the list.
+   2. Verify the associated subnet is listed under the **Subnets** tab.
+   3. Confirm the router is correctly configured and attached if required.
+
+For a step-by-step walkthrough, watch the tutorial video below:
+
+.. raw:: html
+
+   <div style="text-align: center;">
+     <video width="640" height="480" controls>
+       <source src="_static/create_network.webm" type="video/webm">
+       Your browser does not support the video tag.
+     </video>
+   </div>
+
+Verifying Security Groups in OpenStack
+======================================
+
+To verify and configure security groups in OpenStack, follow these steps:
+
+1. **Navigate to the Security Groups Section**
+
+   - On the left-hand side, under the **Project** section, click on the **Network** tab.
+   - In the drop-down menu, select **Security Groups**.
+
+2. **Select Your Security Group**
+
+   - You will see a list of security groups associated with your project.
+   - Click on the **Security Group** assigned to your instances.
+
+3. **Review the Security Group Rules**
+
+   Ensure the following rules are present:
+
+   **Ingress Rules** *(incoming traffic)*:
+
+   - **Protocol**: TCP
+     - **Direction**: Ingress
+     - **Port Range**: *(Specify port ranges or use "All TCP" to allow all ports)*
+   - **Protocol**: UDP
+     - **Direction**: Ingress
+     - **Port Range**: *(Specify port ranges or use "All UDP" to allow all ports)*
+
+   **Egress Rules** *(outgoing traffic)*:
+
+   - **Protocol**: TCP
+     - **Direction**: Egress
+     - **Port Range**: *(Allow all or specify the range)*
+   - **Protocol**: UDP
+     - **Direction**: Egress
+     - **Port Range**: *(Allow all or specify the range)*
+
+4. **Modify Security Group Rules if Necessary**
+
+   - If these rules are not present or incorrectly configured, add or modify them:
+     - Click **Add Rule**.
+     - Select the appropriate protocol, direction, and port ranges to allow TCP and UDP ingress/egress.
+
+5. **Save Changes**
+
+   - After making any changes, ensure you **Save** them.
+
+.. image:: _static/Screenshot_from_2024-09-05_11-28-43.png
+   :align: center
+   :width: 650px
+
+
+Creating and Associating a Floating IP in OpenStack
+===================================================
+
+Follow these steps to create and associate a floating IP:
+
+1. **Navigate to the Floating IPs Section**
+
+   - Navigate to the **Project** section and select the **Network** tab.
+   - Click on **Floating IPs** to view and manage floating IP addresses.
+
+2. **Allocate a Floating IP**
+
+   - Click on the **Allocate IP** button.
+   - In the allocation settings, select the **External Network** from the drop-down menu (this is the network that provides public IP addresses).
+
+3. **Confirm IP Range**
+
+   - Ensure that the allocated Floating IP starts with **172.167.X.X**. This is the specific range you require.
+
+4. **Associate the Floating IP**
+
+   - Click on the **Associate IP** button.
+   - Choose the **Floating IP** you just allocated.
+   - In the association settings:
+     - Select your internal private network (the network you want to connect the Floating IP to).
+     - Specify the **instance** (or VM) to which the Floating IP should be associated.
+
+5. **Save the Changes**
+
+   - Ensure you save the configuration to apply the changes.
+
+6. **Verify the Association**
+
+   - Confirm that the Floating IP is correctly associated with the internal private network.
+   - The Floating IP should be visible under the **Floating IPs** section with the correct IP range.
+
+.. image:: _static/Screenshot_from_2024-09-05_11-34-02.png
+   :align: center
+   :width: 650px
+
+.. image:: _static/Screenshot_from_2024-09-05_11-34-48.png
+   :align: center
+   :width: 650px
+
+.. image:: _static/Screenshot_from_2024-09-05_11-35-16.png
+   :align: center
+   :width: 650px
+
+.. image:: _static/Screenshot_from_2024-09-05_11-35-44.png
+   :align: center
+   :width: 650px
+
+.. image:: _static/Screenshot_from_2024-09-05_11-38-52.png
+   :align: center
+   :width: 650px
+
+
 Dashboard Instructions for Compute VM Access
 =============================================================
 
@@ -206,7 +388,7 @@ To create a **compute VM** using the **OpenStack dashboard**, follow these steps
 
 1. **Log in to the OpenStack Dashboard**
 
-   - Access the OpenStack portal: Link <https://portal.ccixgtestbed.org/auth/login>_.
+   - Access the OpenStack portal: `Link <https://portal.ccixgtestbed.org/auth/login>`_.
 
    .. image:: _static/instance-1.png
         :align: center
