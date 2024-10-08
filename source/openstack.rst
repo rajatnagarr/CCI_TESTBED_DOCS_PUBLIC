@@ -206,60 +206,80 @@ To create a network in OpenStack, follow these steps:
 
 1. **Log in to the OpenStack Dashboard**
 
-   1. Open a web browser and navigate to the OpenStack dashboard URL.
-   2. Enter your **Username**, **Password**, and **Domain Name**.
-   3. Click **Sign In**.
+   - Open a web browser and navigate to the OpenStack dashboard URL.
+   - Enter your **Username**, **Password**, and **Domain Name**.
+   - Click **Sign In**.
 
 2. **Navigate to the Network Section**
 
-   1. In the left-hand menu, under the **Project** section, click on the **Network** tab.
-   2. From the drop-down menu, select **Networks**.
+   - On the left-hand side, under the **Project** section, click on the **Network** tab.
+   - In the drop-down menu, select **Networks**.
 
 3. **Create a New Network**
 
-   1. Click the **Create Network** button.
-   2. In the **Create Network** dialog, provide the following details:
-      - **Name**: Enter a name for the network (e.g., `Internal/External-Network-Username`).
-      - **Description**: *(Optional)* Provide a brief description of the network.
-      - **Provider Network**: Leave as default for a regular tenant network.
-      - **Admin State**: Ensure the admin state is set to **Up**.
-   3. Click **Create** to create the network.
+   - Click on the **Create Network** button.
+
+   - In the **Create Network** dialog, provide the following details:
+
+     - **Name**: Enter a name for the network (e.g., ``Internal/External-Network-Username``).
+     - **Description**: *(Optional)* Provide a brief description of the network.
+     - **Provider Network**: Leave as default for a regular tenant network.
+     - **Admin State**: Ensure the admin state is set to **Up**.
+
+   - Click **Create** to create the network.
 
 4. **Create a Subnet for the Network**
 
-   1. After creating the network, navigate to the **Subnets** tab under the **Network** section.
-   2. Click the **Create Subnet** button.
-   3. In the **Create Subnet** dialog, provide the following details:
-      - **Name**: Enter a name for the subnet (e.g., `Internal/External-Subnet-Username`).
-      - **IP Version**: Choose **IPv4**.
-      - **CIDR**: Enter the IP address range in CIDR notation (e.g., `10.0.0.0/24`).
-      - **Gateway IP**: *(Optional)* Enter the gateway IP address for the subnet.
-      - **Allocation Pools**: *(Optional)* Define a range of IP addresses to allocate from.
-      - **DNS Name Servers**: *(Optional)* Enter DNS nameservers if required.
-      - **Host Routes**: *(Optional)* Define any host routes for the subnet.
-   4. Click **Create** to create the subnet.
+   1. **Navigate to the Subnets Section**
+
+      - After creating the network, navigate to the **Subnets** tab under the **Network** section.
+
+   2. **Click the Create Subnet Button**
+
+      - Click the **Create Subnet** button.
+
+   3. **Provide Subnet Details**
+
+      - In the **Create Subnet** dialog, provide the following details:
+
+        - **Name**: Enter a name for the subnet (e.g., ``Internal/External-Subnet-Username``).
+        - **IP Version**: Choose the IP version IPv4 based on your requirements.
+        - **CIDR**: Enter the IP address range in CIDR notation (e.g., ``10.0.0.0/24``).
+        - **Gateway**: *(Optional)* Enter the gateway IP address for the subnet.
+        - **Allocation Pools**: *(Optional)* Define a range of IP addresses to allocate from.
+        - **DNS Nameservers**: *(Optional)* Enter DNS nameservers if required.
+        - **Host Routes**: *(Optional)* Define any host routes for the subnet.
+
+   4. **Create the Subnet**
+
+      - Click **Create** to create the subnet.
 
 5. **Create a Router (Optional)**
 
    If you need to connect your network to an external network or provide internet access, you may need to create a router:
 
-   1. Navigate to the **Routers** tab under the **Network** section.
-   2. Click the **Create Router** button.
-   3. In the **Create Router** dialog, provide the following details:
-      - **Name**: Enter a name for the router (e.g., `Internal/External-Router-Username`).
-      - **Description**: *(Optional)* Provide a brief description of the router.
-      - **Admin State**: Ensure the admin state is set to **Up**.
-   4. Click **Create** to create the router.
-   5. **Attach the Router to the Network**:
-      - Select the router from the list and click on it to open the details page.
-      - Navigate to the **Interfaces** tab and click **Add Interface**.
-      - Select the subnet you created and click **Add Interface**.
+   - Navigate to the **Routers** tab under the **Network** section.
+   - Click the **Create Router** button.
+
+   - In the **Create Router** dialog, provide the following details:
+
+     - **Name**: Enter a name for the router (e.g., ``Internal/External-Router-Username``).
+     - **Description**: *(Optional)* Provide a brief description of the router.
+     - **Admin State**: Ensure the admin state is set to **Up**.
+
+   - Click **Create** to create the router.
+
+   - **Attach the Router to the Network**:
+
+     1. Select the router from the list and click on it to open the details page.
+     2. Navigate to the **Interfaces** tab and click **Add Interface**.
+     3. Select the subnet you created and click **Add**.
 
 6. **Verify Network Configuration**
 
-   1. Return to the **Networks** tab and ensure your new network appears in the list.
-   2. Verify the associated subnet is listed under the **Subnets** tab.
-   3. Confirm the router is correctly configured and attached if required.
+   - Return to the **Networks** tab and ensure your new network appears in the list.
+   - Verify the associated subnet is listed under the **Subnets** tab.
+   - Confirm the router is correctly configured and attached if required.
 
 For a step-by-step walkthrough, watch the tutorial video below:
 
@@ -294,20 +314,20 @@ To verify and configure security groups in OpenStack, follow these steps:
    **Ingress Rules** *(incoming traffic)*:
 
    - **Protocol**: TCP
-     - **Direction**: Ingress
-     - **Port Range**: *(Specify port ranges or use "All TCP" to allow all ports)*
+   - **Direction**: Ingress
+   - **Port Range**: *(Specify port ranges or use "All TCP" to allow all ports)*
    - **Protocol**: UDP
-     - **Direction**: Ingress
-     - **Port Range**: *(Specify port ranges or use "All UDP" to allow all ports)*
+   - **Direction**: Ingress
+   - **Port Range**: *(Specify port ranges or use "All UDP" to allow all ports)*
 
    **Egress Rules** *(outgoing traffic)*:
 
    - **Protocol**: TCP
-     - **Direction**: Egress
-     - **Port Range**: *(Allow all or specify the range)*
+   - **Direction**: Egress
+   - **Port Range**: *(Allow all or specify the range)*
    - **Protocol**: UDP
-     - **Direction**: Egress
-     - **Port Range**: *(Allow all or specify the range)*
+   - **Direction**: Egress
+   - **Port Range**: *(Allow all or specify the range)*
 
 4. **Modify Security Group Rules if Necessary**
 
@@ -322,7 +342,6 @@ To verify and configure security groups in OpenStack, follow these steps:
 .. image:: _static/Screenshot_from_2024-09-05_11-28-43.png
    :align: center
    :width: 650px
-
 
 Creating and Associating a Floating IP in OpenStack
 ===================================================
