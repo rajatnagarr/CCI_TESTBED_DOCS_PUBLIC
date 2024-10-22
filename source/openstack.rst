@@ -1,6 +1,15 @@
 Launching OpenStack Instances
 =============================================================
 
+.. code-block:: yaml
+
+   #cloud-config
+
+   password: <password>
+   chpasswd:
+     expire: False
+   ssh_pwauth: True
+
 This documentation provides steps to create and launch OpenStack instances with USRP (Universal Software Radio Peripheral) access using the Command-Line Interface (CLI) and generic compute VMs through the OpenStack dashboard.
 
 Keywords: USRP, Instance, OpenStack, CLI, Dashboard, Compute VM, Cloud Computing
@@ -90,7 +99,7 @@ CLI Instructions for Compute
 
    .. code-block:: bash
 
-       openstack --insecure server create --flavor <flavor_name> --image <image_name> --nic net-id=<internal_network_id> --availability-zone compute <instance_name>
+       openstack --insecure server create --flavor <flavor_name> --image <image_name> --nic net-id=<internal_network_id> --user-data <cloud-config> --availability-zone compute <instance_name>
 
 CLI Instructions for Radio
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
