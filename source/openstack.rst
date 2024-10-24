@@ -1,15 +1,6 @@
 Launching OpenStack Instances
 =============================================================
 
-.. code-block:: yaml
-
-   #cloud-config
-
-   password: <password>
-   chpasswd:
-     expire: False
-   ssh_pwauth: True
-
 This documentation provides steps to create and launch OpenStack instances with USRP (Universal Software Radio Peripheral) access using the Command-Line Interface (CLI) and generic compute VMs through the OpenStack dashboard.
 
 Keywords: USRP, Instance, OpenStack, CLI, Dashboard, Compute VM, Cloud Computing
@@ -87,6 +78,27 @@ To create an OpenStack instance with **USRP access** using the Command-Line Inte
     .. image:: _static/rc_file_command_2.png
         :align: center
         :width: 550px
+4. **Create a Cloud-Config File**
+
+   Create a file that contains the following cloud-init configuration. This file will be used during instance creation to set up the instance with a specified password and allow SSH password authentication.
+
+   .. code-block:: yaml
+
+       #cloud-config
+
+       password: <password>
+       chpasswd:
+         expire: False
+       ssh_pwauth: True
+
+   - Save this file with an appropriate name, for example, ``cloud-config``.
+   - Make the file executable by running the command:
+
+    .. code-block:: bash
+
+         chmod +x cloud-config
+         
+   - Give the file name in the place-holder ``<file_name>`` while creating instance. 
 
 .. 4. **Create an Instance with USRP Access**
 Create an Instance with USRP Access
